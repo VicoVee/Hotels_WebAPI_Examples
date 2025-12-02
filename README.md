@@ -1,5 +1,9 @@
 # Hotels_WebAPI_Examples
 An example of how to use the hotels api!
+For the City and States, they are:
+- Philadelphia, Pennsylvania
+- Orlando, Florida
+- Las Vegas, Nevada
 
 For the general APIs to get the hotels, hotel rooms, etc. these DO NOT require the API keys
 
