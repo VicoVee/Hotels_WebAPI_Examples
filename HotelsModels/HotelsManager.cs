@@ -80,6 +80,44 @@ public List<HotelRoom> GetAllRoomsByAmenities(List<HotelAmenity> amenities)
 }
 
 // ============================================================
+//            External Customer Reservations
+// ============================================================
+    public BookedHotelRoom ReserveRoom(HotelRoom room, Customer customer, int travelSiteID, Guid apiToken)
+    {
+            try
+            {
+                // Create a client
+                HttpClient client = new HttpClient();
+
+                // Create a request
+                string customerJSON = JsonSerializer.Serialize(customer);
+                StringContent body = new StringContent(customerJSON);
+                body.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                HttpResponseMessage response = client.PostAsync($"https://cis-iis2.temple.edu/Fall2025/CIS3342_tuq23078/WebAPI/" +
+                    $"VictoriaAPIs/Hotels/ReserveHotelRoom/ExternalCustomer/" +
+                        "?hotelID={room.HotelRoomID}&" +
+                        "hotelRoomID={room.HotelID}&" +
+                        "travelSiteID={travelSiteID}&"+
+                        "travelSiteAPIToken={apiToken}", body).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                     string content = response.Content.ReadAsStringAsync().Result;
+                     BookedHotelRoom reservation = JsonSerializer.Deserialize<BookedHotelRoom>(content);
+                     return reservation;
+                    // Returns the room you booked, the customer info, and the HotelBookingID, which is your 
+                    // ReservationID
+                }
+            } catch (Exception ex) {
+                Console.WriteLine(ex);
+            }
+        }
+    }
+
+}
+
+// ============================================================
 //            Hotel and Hotelroom Filters to Use
 // ============================================================
 
